@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addReminder } from '../actions/reminderActions';
+import { addReminder, deleteReminder } from '../actions/reminderActions';
 
 class App extends Component {
   constructor(props) {
@@ -15,13 +15,26 @@ class App extends Component {
     this.props.addReminder(this.state.text);
   }
 
+  deleteReminder(id) {
+    this.props.deleteReminder(id);
+  }
+
   renderReminders() {
     const { reminders } = this.props;
     return (
       <ul className="list-group col-sm-4">
         {reminders.map(reminder => (
           <li key={reminder.id} className="list-group-item">
-            <div>{reminder.text}</div>
+            <div className="list-item">{reminder.text}</div>
+            <div
+              className="list-item delete-button"
+              onClick={() => this.deleteReminder(reminder.id)}
+              onKeyDown={() => this.deleteReminder(reminder.id)}
+              role="button"
+              tabIndex={0}
+            >
+              &#x2715;
+            </div>
           </li>
         ))}
       </ul>
@@ -59,10 +72,11 @@ function mapStateToProps(state) {
 
 App.propTypes = {
   addReminder: PropTypes.func.isRequired,
+  deleteReminder: PropTypes.func.isRequired,
   reminders: PropTypes.arrayOf(PropTypes.shape({
     text: PropTypes.string,
     id: PropTypes.number,
   })).isRequired,
 };
 
-export default connect(mapStateToProps, { addReminder })(App);
+export default connect(mapStateToProps, { addReminder, deleteReminder })(App);
