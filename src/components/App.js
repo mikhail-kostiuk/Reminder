@@ -34,9 +34,14 @@ class App extends Component {
               </div>
             </div>
             <div
+              style={{ cursor: 'pointer' }}
               className="list-item delete-button"
               onClick={() => this.deleteReminder(reminder.id)}
-              onKeyDown={() => this.deleteReminder(reminder.id)}
+              onKeyDown={(e) => {
+                if (e.keyCode === 13) {
+                  this.deleteReminder(reminder.id);
+                }
+              }}
               role="button"
               tabIndex={0}
             >
